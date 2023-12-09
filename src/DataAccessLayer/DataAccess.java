@@ -1,12 +1,9 @@
 package DataAccessLayer;
-import java.security.Guard;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.lang.model.util.ElementScanner14;
 
 import Entities.AppUser;
 import Entities.Folio;
@@ -104,22 +101,26 @@ public class DataAccess {
     }
     
     //Misafir çıkışı sağlar(CheckOut)
-    public int RemoveGuestFromRoom(Guest removeGuest,int roomId){
-        Room room = GetRoomByID(roomId);
-        List<Guest> roomGuestsList = room.getGuests();
-
-        if( roomGuestsList.remove(removeGuest)){
+    public int RemoveGuestFromRoom(String GuestTC,int roomId){
+        List<Guest> roomGuestsList = GetGuestListByRoom(roomId);
+        boolean checkResult=false;
+        for (Guest guest : roomGuestsList) {
+            if(guest.getTC()==GuestTC){
+                checkResult = roomGuestsList.remove(guest);
+            }
+        }
+        if( checkResult){
             return 1;//Başarılı sonuç kodu
         }
         return -1;//Başarsızın sonuç kodu
     }
 
     //Misafirin kaç gün kaldığını kontrol eder
-    public int CheckDaysOfGuest(Guest checkGuest,int roomId){
+    public int CheckDaysOfGuest(String GuestTc,int roomId){
         Room room  = GetRoomByID(roomId);
         List<Guest> guestsList = room.getGuests();
         for (Guest guest : guestsList) {
-            if(checkGuest.getTC()==guest.getTC())//Mevcut misafir listesi içinde döner ve Tc değerine göre misafiri getirir
+            if(guest.getTC()==GuestTc)//Mevcut misafir listesi içinde döner ve Tc değerine göre misafiri getirir
             {
                 LocalDate checkInDate = guest.getCheckIn();//Müşteri giirş tarihini alır
                 LocalDate now = LocalDate.now();//Şu anki zamanın gün ay yıl şeklinde alır
@@ -132,11 +133,11 @@ public class DataAccess {
     }
 
     //Misafirin çıkış tarihini kontrol eder
-    public int ControlCheckOutDate(Guest checkGuest,int RoomId){
+    public int ControlCheckOutDate(String GuestTc,int RoomId){
         List<Guest> guests = GetGuestListByRoom(RoomId);
         LocalDate guestCheckOutDate = LocalDate.now();
         for (Guest guest : guests) {
-            if(guest.getTC()==checkGuest.getTC()){
+            if(guest.getTC()==GuestTc){
                 guestCheckOutDate = guest.getCheckOut();
             }
         }
