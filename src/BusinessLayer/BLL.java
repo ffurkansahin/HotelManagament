@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import DataAccessLayer.DataAccess;
+import Entities.AppUser;
 import Entities.Folio;
 import Entities.Guest;
+import Entities.Room;
 
 public class BLL {
 
@@ -14,6 +16,50 @@ public class BLL {
     public BLL() {
         super();
         DAL = new DataAccess();
+    }
+
+        public int AddUser(String userName, String password, String name, String surname) {
+        for (var user : GetAllAppUser()) {
+            if (user.getUsername().equals(userName)) {
+                return -1;//Kullanıcı zaten önceden eklenmiş
+            }
+        }
+        AppUser newAppUser = new AppUser();
+        newAppUser.setUsername(userName);
+        newAppUser.setName(name);
+        newAppUser.setSurname(surname);
+        newAppUser.setPassword(password);
+        return DAL.AddUser(newAppUser);
+        
+    }
+
+    public int CheckUserForLogin(String userName, String password) {
+        return DAL.CheckUserForLogin(userName, password);
+        
+    }
+
+    public List<AppUser> GetAllAppUser() {
+        return DAL.GetAllAppUser();
+    }
+
+    public int UpdateUser(String userName, String password, String name, String surname) {
+        return DAL.UpdateUser(userName,password,name,surname);
+    }
+
+    public List<Room> GetAllRooms() {
+        return DAL.GetAllRooms();
+    }
+
+    public int CreateRoom(int roomID, boolean isClean, boolean isEmpty) {
+        Room newRoom = new Room();
+        newRoom.setRoomID(roomID);
+        newRoom.setClean(isClean);
+        newRoom.setEmpty(isEmpty);
+        return DAL.CreateRoom(newRoom);
+    }
+
+    public Room GetRoomByID(int id) {
+        return DAL.GetRoomByID(id);
     }
 
     public int AddGuestToRoom(String TC,String Name,String Surname,LocalDate CheckIn,LocalDate CheckOut,int RoomId ){
@@ -86,5 +132,19 @@ public class BLL {
     {
         DAL.DeleteProductFromFolio(roomId, productName);
     }
+
+    public int AddUser(String Name,String Username,String Password){
+        List<AppUser> appUsers = DAL.GetAllAppUser();
+        for (AppUser appUser : appUsers) {
+            if(appUser.getUsername()==Username){
+                return -1;
+            } 
+        }
+        AppUser newAppUser = new AppUser();
+        newAppUser.setUsername(Username);
+
+        return 1;
+    }
+
 
 }

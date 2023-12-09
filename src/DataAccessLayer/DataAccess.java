@@ -27,9 +27,9 @@ public class DataAccess {
     }
 
     //Kullanıcı listesindeki kullanıcıları kontrol eder
-    public int CheckUserForLogin(AppUser appUserCheck){
+    public int CheckUserForLogin(String userName, String password){
         for (AppUser appUser : appUsers) {
-            if(appUserCheck.getUsername() == appUser.getUsername() && appUserCheck.getPassword()==appUser.getPassword()){
+            if(userName.equals(appUser.getUsername()) && password.equals(appUser.getPassword())){
                 return 1;//Kullanıcı listesindeki kullanıcıları parametre olarak gelen kullanıcıya göre kontrol eder ve bulursa başarılı değer olan 1 döner
             }
         }
@@ -42,14 +42,14 @@ public class DataAccess {
     }
 
     //Kullanıcıyı günceller
-    public int UpdateUser(AppUser appUserUpdate){
-        for (AppUser appUser : appUsers) {
-            if(appUser.equals(appUserUpdate)){//Kullanıcı listesi içinde parametre olarak gelen kullanıcıyı arar
-                if(appUser.getPassword()==appUserUpdate.getPassword())//Güncellenecek kullanıcının şifresini kontrol eder
+    public int UpdateUser(String username,String password, String name, String surname){
+        for (AppUser appUser : GetAllAppUser()) {
+            if(appUser.getUsername().equals(username)){//Kullanıcı listesi içinde parametre olarak gelen kullanıcıyı arar
+                if(appUser.getPassword()==password)//Güncellenecek kullanıcının şifresini kontrol eder
                 {
-                    appUser.setName(appUserUpdate.getName());
-                    appUser.setSurname(appUserUpdate.getSurname());
-                    appUser.setPassword(appUserUpdate.getPassword());
+                    appUser.setName(name);
+                    appUser.setSurname(surname);
+                    appUser.setPassword(password);
                     return 1;//Başarılı kodunu döndürür
                 }
                 else return -2;//Şifre yanlış hata kodunu döndürür
@@ -69,7 +69,7 @@ public class DataAccess {
     public int CreateRoom(Room roomCreate){
         
         boolean checkRoom = rooms.add(roomCreate);
-        if(checkRoom == true) return 1;
+        if(checkRoom) return 1;
         return -1;
     }
 
