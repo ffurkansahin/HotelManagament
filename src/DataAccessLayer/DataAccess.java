@@ -1,22 +1,19 @@
 package DataAccessLayer;
 
-import java.security.Guard;
+import Entities.AppUser;
+import Entities.Folio;
+import Entities.Guest;
+import Entities.Room;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.lang.model.util.ElementScanner14;
-
-import Entities.AppUser;
-import Entities.Folio;
-import Entities.Guest;
-import Entities.Room;
-
 public class DataAccess {
-    List<AppUser> appUsers = new ArrayList<AppUser>();//Kullanıcı listesini oluşturur
-    List<Room> rooms = new ArrayList<Room>();//Room listesi oluşturur
+    List<AppUser> appUsers = new ArrayList<>();//Kullanıcı listesini oluşturur
+    List<Room> rooms = new ArrayList<>();//Room listesi oluşturur
 
 
     //Kullanıcı listesine kullanıcı ekler
@@ -30,9 +27,9 @@ public class DataAccess {
     }
 
     //Kullanıcı listesindeki kullanıcıları kontrol eder
-    public int CheckUserForLogin(AppUser appUserCheck) {
+    public int CheckUserForLogin(String username, String password) {
         for (AppUser appUser : appUsers) {
-            if (appUserCheck.getUsername() == appUser.getUsername() && appUserCheck.getPassword() == appUser.getPassword()) {
+            if (username.equals(appUser.getUsername()) && password.equals(appUser.getPassword())) {
                 return 1;//Kullanıcı listesindeki kullanıcıları parametre olarak gelen kullanıcıya göre kontrol eder ve bulursa başarılı değer olan 1 döner
             }
         }
@@ -70,8 +67,7 @@ public class DataAccess {
     //Yeni oda oluşturur
     public int CreateRoom(Room roomCreate) {
         boolean checkRoom = rooms.add(roomCreate);
-        if (checkRoom == true) return 1;
-        return -1;
+        return checkRoom ? 1 : -1;
     }
 
     //ID bilgisine göre oda bilgisi getirir
