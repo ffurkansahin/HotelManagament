@@ -7,6 +7,9 @@ public class Folio {
 
     private HashMap<String,Integer> Products;
     private double Balance;
+    public Folio() {
+        Products = new HashMap<String,Integer>();
+    }
     
     public HashMap<String, Integer> getProducts() {
         return Products;

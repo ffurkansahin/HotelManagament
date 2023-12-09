@@ -42,8 +42,8 @@ public class BLL {
         return DAL.GetAllAppUser();
     }
 
-    public int UpdateUser(String userName, String password, String name, String surname) {
-        return DAL.UpdateUser(userName,password,name,surname);
+    public int UpdateUser(String userName, String password,String newPassword,String name, String surname) {
+        return DAL.UpdateUser(userName,password,newPassword,name,surname);
     }
 
     public List<Room> GetAllRooms() {
@@ -131,19 +131,6 @@ public class BLL {
     public void DeleteProductFromFolio(int roomId,String productName)
     {
         DAL.DeleteProductFromFolio(roomId, productName);
-    }
-
-    public int AddUser(String Name,String Username,String Password){
-        List<AppUser> appUsers = DAL.GetAllAppUser();
-        for (AppUser appUser : appUsers) {
-            if(appUser.getUsername()==Username){
-                return -1;
-            } 
-        }
-        AppUser newAppUser = new AppUser();
-        newAppUser.setUsername(Username);
-
-        return 1;
     }
 
 

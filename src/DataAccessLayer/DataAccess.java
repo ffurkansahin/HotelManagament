@@ -42,14 +42,14 @@ public class DataAccess {
     }
 
     //Kullanıcıyı günceller
-    public int UpdateUser(String username,String password, String name, String surname){
+    public int UpdateUser(String username,String password,String newPassword ,String name, String surname){
         for (AppUser appUser : GetAllAppUser()) {
             if(appUser.getUsername().equals(username)){//Kullanıcı listesi içinde parametre olarak gelen kullanıcıyı arar
                 if(appUser.getPassword()==password)//Güncellenecek kullanıcının şifresini kontrol eder
                 {
                     appUser.setName(name);
                     appUser.setSurname(surname);
-                    appUser.setPassword(password);
+                    appUser.setPassword(newPassword);
                     return 1;//Başarılı kodunu döndürür
                 }
                 else return -2;//Şifre yanlış hata kodunu döndürür
@@ -106,12 +106,11 @@ public class DataAccess {
         boolean checkResult=false;
         for (Guest guest : roomGuestsList) {
             if(guest.getTC()==GuestTC){
-                checkResult = roomGuestsList.remove(guest);
+                roomGuestsList.remove(guest);
+                return 1;
             }
         }
-        if( checkResult){
-            return 1;//Başarılı sonuç kodu
-        }
+        
         return -1;//Başarsızın sonuç kodu
     }
 
