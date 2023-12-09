@@ -1,7 +1,6 @@
 package Entities;
 
 public class AppUser {
-    private int ID;
     private String Username;
     private String Password;
     private String Name;
@@ -18,12 +17,6 @@ public class AppUser {
     }
     public void setSurname(String surname) {
         Surname = surname;
-    }
-    public int getID() {
-        return ID;
-    }
-    public void setID(int iD) {
-        ID = iD;
     }
     public String getUsername() {
         return Username;
