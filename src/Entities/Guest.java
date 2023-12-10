@@ -12,6 +12,7 @@ public class Guest {
     public LocalDate getCheckIn() {
         return CheckIn;
     }
+
     public void setCheckIn(LocalDate checkIn) {
         CheckIn = checkIn;
     }
@@ -46,5 +47,13 @@ public class Guest {
 
     public void setSurname(String surname) {
         Surname = surname;
+    }
+
+    @Override
+    public String toString() {
+        return """
+                TC: %s
+                Name: %s %s"""
+                .formatted(getTC(), getName(), getSurname());
     }
 }

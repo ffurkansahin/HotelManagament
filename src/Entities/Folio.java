@@ -5,13 +5,15 @@ import java.util.HashMap;
 
 public class Folio {
 
-    private HashMap<String,Integer> Products;
+    private HashMap<String,Double> Products;
     private double Balance;
-    
-    public HashMap<String, Integer> getProducts() {
+    public Folio (){
+        Products = new HashMap<String,Double>();
+    }
+    public HashMap<String, Double> getProducts() {
         return Products;
     }
-    public void setProducts(HashMap<String, Integer> products) {
+    public void setProducts(HashMap<String, Double> products) {
         Products = products;
     }
     public double getBalance() {
@@ -21,4 +23,11 @@ public class Folio {
         Balance = balance;
     }
 
+    @Override
+    public String toString() {
+        return "Folio{" +
+                "Products=" + Products +
+                ", Balance=" + Balance +
+                '}';
+    }
 }
