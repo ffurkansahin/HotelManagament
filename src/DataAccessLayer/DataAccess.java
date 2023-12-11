@@ -27,35 +27,31 @@ public class DataAccess {
 
     //Kullanıcı listesindeki kullanıcıları kontrol eder
     public int CheckUserForLogin(String userName, String password) {
-        for (AppUser appUser : appUsers) {
-            if (userName.equals(appUser.getUsername()) && password.equals(appUser.getPassword())) {
-                return 1;//Kullanıcı listesindeki kullanıcıları parametre olarak gelen kullanıcıya göre kontrol eder ve bulursa başarılı değer olan 1 döner
-            }
-        }
-        return -1;
+
+        return appUsers.contains(new AppUser(userName,password, null,...)) ? 1 : -1;
+     
     }
 
     //Tüm kullancıların listesini getirir
     public List<AppUser> GetAllAppUser() {
-        return appUsers;
+        return Collections.unmodifiable(appUsers);
     }
 
     //Kullanıcıyı günceller
-    public int UpdateUser(String username, String password, String newPassword, String name, String surname) {
-        for (AppUser appUser : GetAllAppUser()) {
-            if (appUser.getUsername().equals(username)) {//Kullanıcı listesi içinde parametre olarak gelen kullanıcıyı arar
-                if (appUser.getPassword() == password)//Güncellenecek kullanıcının şifresini kontrol eder
-                {
-                    appUser.setName(name);
-                    appUser.setSurname(surname);
-                    appUser.setPassword(newPassword);
-                    return 1;//Başarılı kodunu döndürür
-                } else return -2;//Şifre yanlış hata kodunu döndürür
+    public int UpdateUser(String username, String password, String newPassword,  name, surname) {
+        AppUser newValue = new AppUser(username, password, String name, surnam);
 
+        int i = appUsers.indexOf(newInfo);
+        if(i==-1) return -1;
 
-            }
-        }
-        return -1;//Kullanıcı bulunamadı hata kodunu döndürür
+        appUsers.remove(i);
+        newValue.setPassWord(newPassword);
+        appUsers.add(i,newValue);
+        
+        AppUser current =  appUsers.get(i);
+        current.setName(name)
+        current.setSurname(surna);
+        return 1;
     }
 
     //Tüm odaların listesini getirir
@@ -104,6 +100,7 @@ public class DataAccess {
         for (Guest guest : roomGuestsList) {
             if (guest.getTC() == GuestTC) {
                 checkResult = roomGuestsList.remove(guest);
+                // this throws ConcurrentModification Excapton, enhanced for is readonly: instead Iterator 
             }
         }
         if (checkResult) {
