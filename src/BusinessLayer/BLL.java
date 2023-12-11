@@ -3,6 +3,7 @@ package BusinessLayer;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.jar.Attributes.Name;
 
 import DataAccessLayer.DataAccess;
 import Entities.AppUser;
@@ -15,7 +16,6 @@ public class BLL {
     DataAccess DAL;
 
     public BLL() {
-        super();
         DAL = new DataAccess();
     }
 
@@ -35,7 +35,10 @@ public class BLL {
     }
 
     public int CheckUserForLogin(String userName, String password) {
-        return DAL.CheckUserForLogin(userName, password);
+        AppUser checkAppUser = new AppUser();
+        checkAppUser.setUsername(userName);
+        checkAppUser.setPassword(password); 
+        return DAL.CheckUserForLogin(checkAppUser);
 
     }
 
@@ -44,7 +47,12 @@ public class BLL {
     }
 
     public int UpdateUser(String userName, String password, String newPassword, String name, String surname) {
-        return DAL.UpdateUser(userName, password, newPassword, name, surname);
+        AppUser updatAppUser = new AppUser();
+        updatAppUser.setName(name);
+        updatAppUser.setSurname(surname);
+        updatAppUser.setUsername(userName);
+        updatAppUser.setPassword(password);
+        return DAL.UpdateUser(updatAppUser, newPassword);
     }
 
     public List<Room> GetAllRooms() {
@@ -79,8 +87,14 @@ public class BLL {
 
     public int RemoveGuestFromRoom(String GuestTC, int RoomId) {
         if (CheckTcNo(GuestTC) == 1) {
-            DAL.RemoveGuestFromRoom(GuestTC, RoomId);
-            return 1;
+            List<Guest> guestList = GetGuestListByRoom(RoomId);
+            for (Guest guest : guestList) {
+                if(guest.getTC().equals(GuestTC))
+                {
+                    return DAL.RemoveGuestFromRoom(guest, RoomId);
+                }
+            }
+            
         }
         return -1;
 
@@ -114,8 +128,7 @@ public class BLL {
     }
 
     public void AddProductToFolio(int roomId, String productName, double productPrice) {
-//        HashMap<String, Integer> products = new HashMap<String, Integer>();
-//        products.put(productName, productPrice);
+
         Room room = GetRoomByID(roomId);
         Folio roomFolio = room.getFolios();
         double balance = roomFolio.getBalance();

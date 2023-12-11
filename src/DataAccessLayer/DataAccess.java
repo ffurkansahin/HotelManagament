@@ -19,16 +19,16 @@ public class DataAccess {
     //Kullanıcı listesine kullanıcı ekler
     public int AddUser(AppUser appUserAdd) {
         boolean checkAdd = appUsers.add(appUserAdd);
-        if (checkAdd == true) {
+        if (checkAdd) {
             return 1;
         } else
             return -1;
     }
 
     //Kullanıcı listesindeki kullanıcıları kontrol eder
-    public int CheckUserForLogin(String userName, String password) {
+    public int CheckUserForLogin(AppUser checkAppUser) {
         for (AppUser appUser : appUsers) {
-            if (userName.equals(appUser.getUsername()) && password.equals(appUser.getPassword())) {
+            if (checkAppUser.getUsername().equals(appUser.getUsername()) && checkAppUser.getPassword().equals(appUser.getPassword())) {
                 return 1;//Kullanıcı listesindeki kullanıcıları parametre olarak gelen kullanıcıya göre kontrol eder ve bulursa başarılı değer olan 1 döner
             }
         }
@@ -41,13 +41,13 @@ public class DataAccess {
     }
 
     //Kullanıcıyı günceller
-    public int UpdateUser(String username, String password, String newPassword, String name, String surname) {
+    public int UpdateUser(AppUser updatAppUser,String newPassword) {
         for (AppUser appUser : GetAllAppUser()) {
-            if (appUser.getUsername().equals(username)) {//Kullanıcı listesi içinde parametre olarak gelen kullanıcıyı arar
-                if (appUser.getPassword() == password)//Güncellenecek kullanıcının şifresini kontrol eder
+            if (appUser.getUsername().equals(updatAppUser.getUsername())) {//Kullanıcı listesi içinde parametre olarak gelen kullanıcıyı arar
+                if (appUser.getPassword() == updatAppUser.getPassword())//Güncellenecek kullanıcının şifresini kontrol eder
                 {
-                    appUser.setName(name);
-                    appUser.setSurname(surname);
+                    appUser.setName(updatAppUser.getName());
+                    appUser.setSurname(updatAppUser.getSurname());
                     appUser.setPassword(newPassword);
                     return 1;//Başarılı kodunu döndürür
                 } else return -2;//Şifre yanlış hata kodunu döndürür
@@ -98,18 +98,11 @@ public class DataAccess {
     }
 
     //Misafir çıkışı sağlar(CheckOut)
-    public int RemoveGuestFromRoom(String GuestTC, int roomId) {
-        List<Guest> roomGuestsList = GetGuestListByRoom(roomId);
-        boolean checkResult = false;
-        for (Guest guest : roomGuestsList) {
-            if (guest.getTC() == GuestTC) {
-                checkResult = roomGuestsList.remove(guest);
-            }
-        }
-        if (checkResult) {
-            return 1;//Başarılı sonuç kodu
-        }
-        return -1;//Başarsızın sonuç kodu
+    public int RemoveGuestFromRoom(Guest removeGuest, int roomId) {
+        List<Guest> guestList = GetGuestListByRoom(roomId);
+        int removeGuestIndex = guestList.indexOf(removeGuest);
+        guestList.remove(removeGuestIndex);
+        return 1;
     }
 
     //Misafirin kaç gün kaldığını kontrol eder

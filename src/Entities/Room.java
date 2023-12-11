@@ -11,7 +11,6 @@ public class Room {
     private Folio Folios;
 
     public Room() {
-        super();
         Folios = new Folio();//Her room nesnesi newlendiğinde folyo oluşur
         Guests = new ArrayList<Guest>();//Her room nesnesi newlendiğinde müşteri listesi oluşur
         this.isClean=true;
